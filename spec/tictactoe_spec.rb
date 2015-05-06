@@ -105,4 +105,17 @@ RSpec.describe Ai do
     expect(@ai.moves.count).to eql 1
   end
 
+  it 'takes the middle spot if that spot is ever open' do
+    @ai.move(@board)
+    expect(@ai.moves).to include("M2")
+  end
+
+  it 'takes an opposite corner after player takes an edge on player first turn' do
+    move = @ai.move(@board)
+    @board.possible_moves.delete(move)
+    move = @game.human.move("T2")
+    @board.last_move = "T2"
+    @ai.move(@board)
+    expect(@ai.moves).to include("B1")
+  end
 end

@@ -1,14 +1,17 @@
 class Board
 
-  attr_reader :possible_moves, :player_moves, :ai_moves, :winning_moves
-
+  attr_reader :possible_moves, :player_moves, :ai_moves, :winning_moves, :corners, :sides
+  attr_accessor :last_move
   def initialize
     @top = ["_", "_", "_"]
     @middle = ["_","_", "_"]
     @bottom = [" ", " ", " "]
     @rows = [@top, @middle, @bottom]
+    @corners = ["T1", "T3", "B1", "B3"]
+    @sides = ["T2", "B2", "M1", "M3"]
     @ai_moves = []
     @player_moves = []
+    @last_move = ""
     @possible_moves = ["T1", "T2", "T3", "M1", "M2", "M3", "B1", "B2", "B3"]
     @winning_moves = [["T1", "T2", "T3"], ["B1", "B2", "B3"], ["M1", "M2", "M3"],
                         ["T1", "M1", "B1"], ["T2", "M2", "B2"], ["T3", "M3", "B3"],
@@ -37,6 +40,7 @@ class Board
       @player_moves << coordinate
     end
     @possible_moves.delete(coordinate)
+    @last_move = coordinate
   end
 
   def find_row(row)
