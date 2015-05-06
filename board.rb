@@ -9,7 +9,7 @@ class Board
     @rows = [@top, @middle, @bottom]
     @ai_moves = []
     @player_moves = []
-    @possible_moves = ["T1", "T2", "T3", "M1", "M2", "M3", "B1", "B2", "B3",]
+    @possible_moves = ["T1", "T2", "T3", "M1", "M2", "M3", "B1", "B2", "B3"]
   end
 
   def display

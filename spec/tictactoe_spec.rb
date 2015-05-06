@@ -26,6 +26,16 @@ RSpec.describe Game do
     expect(@players.last.class).to eql Player
   end
 
+end
+
+RSpec.describe Board do
+
+  before(:each) do
+    @game = Game.new
+    @players = @game.players
+    @board = @game.board
+  end
+
   it 'adds an X to the board when the AI makes a move' do
     @board.add_move("M2", @game.ai)
     expect(@board.display).to eql "_|_|_\n_|X|_\n | | \n"
