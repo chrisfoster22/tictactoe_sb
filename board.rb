@@ -1,6 +1,6 @@
 class Board
 
-  attr_reader :possible_moves
+  attr_reader :possible_moves, :player_moves
 
   def initialize
     @top = ["_", "_", "_"]
@@ -22,6 +22,7 @@ class Board
   end
 
   def add_move(coordinate, player)
+    return "Sorry, that is an invalid move" unless @possible_moves.include?(coordinate)
     split_coords = coordinate.split("")
     row = find_row(split_coords.first)
     column = (split_coords.last.to_i) - 1

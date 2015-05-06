@@ -26,6 +26,26 @@ RSpec.describe Game do
     expect(@players.last.class).to eql Player
   end
 
+    it 'alternates turns' do
+    @board.add_move("M2", @game.active_player)
+    expect(@board.display).to eql "_|_|_\n_|X|_\n | | \n"
+    @board.add_move("M1", @game.active_player)
+    expect(@board.display).to eql "_|_|_\nO|X|_\n | | \n"
+  end
+
+  it 'can end' do
+    @board.add_move("M2", @game.active_player)
+    @board.add_move("M1", @game.active_player)
+    @board.add_move("M3", @game.active_player)
+    @board.add_move("T2", @game.active_player)
+    @board.add_move("T1", @game.active_player)
+    @board.add_move("T3", @game.active_player)
+    @board.add_move("B2", @game.active_player)
+    @board.add_move("B1", @game.active_player)
+    @board.add_move("B3", @game.active_player)
+    expect(@game.over?).to eql true
+  end
+
 end
 
 RSpec.describe Board do
@@ -46,24 +66,10 @@ RSpec.describe Board do
     expect(@board.display).to eql "_|_|_\n_|O|_\n | | \n"
   end
 
-  it 'alternates turns' do
-    @board.add_move("M2", @game.active_player)
-    expect(@board.display).to eql "_|_|_\n_|X|_\n | | \n"
-    @board.add_move("M1", @game.active_player)
-    expect(@board.display).to eql "_|_|_\nO|X|_\n | | \n"
-  end
-
-  it 'can end' do
-    @board.add_move("M2", @game.active_player)
-    @board.add_move("M1", @game.active_player)
-    @board.add_move("M3", @game.active_player)
-    @board.add_move("T2", @game.active_player)
-    @board.add_move("T1", @game.active_player)
-    @board.add_move("T3", @game.active_player)
-    @board.add_move("B2", @game.active_player)
-    @board.add_move("B1", @game.active_player)
-    @board.add_move("B3", @game.active_player)
-    expect(@game.over?).to eql true
+  it 'does not allow players to make a move that has already been made' do
+    @board.add_move("M2", @game.ai)
+    @board.add_move("M2", @game.human)
+    expect(@board.player_moves).to eql []
   end
 
 end
