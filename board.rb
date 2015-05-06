@@ -1,6 +1,6 @@
 class Board
 
-  attr_reader :possible_moves, :player_moves
+  attr_reader :possible_moves, :player_moves, :ai_moves, :winning_moves
 
   def initialize
     @top = ["_", "_", "_"]
@@ -10,6 +10,9 @@ class Board
     @ai_moves = []
     @player_moves = []
     @possible_moves = ["T1", "T2", "T3", "M1", "M2", "M3", "B1", "B2", "B3"]
+    @winning_moves = [["T1", "T2", "T3"], ["B1", "B2", "B3"], ["M1", "M2", "M3"],
+                        ["T1", "M1", "B1"], ["T2", "M2", "B2"], ["T3", "M3", "B3"],
+                        ["T1", "M2", "B3"], ["T3", "M2", "B1"]]
   end
 
   def display

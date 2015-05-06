@@ -24,12 +24,37 @@ class Game
     end
   end
 
-  def move(coordinate)
-    @moves << coordinate
+  def play
+    until over? || winner
+      player = active_player
+      if player.class == Ai
+        puts 'My turn!'
+        move = @ai.move(@board)
+        @board.add_move(move, @ai)
+      elsif player.class == Player
+        puts 'Your turn!'
+        move = gets.chomp
+        @board.add_move(move, @human)
+      end
+      puts @board.display
+    end
   end
 
   def over?
     @board.possible_moves.empty?
+  end
+
+  def winner
+    @board.winning_moves.each do |w|
+      if (@board.ai_moves & w).sort == w.sort
+        puts "You Lost!"
+        return @ai
+      elsif (@board.player_moves & w).sort == w.sort
+        puts "You Won!"
+        return @human
+      end
+    end
+    return nil
   end
 
 end

@@ -12,11 +12,6 @@ RSpec.describe Game do
     expect(@board.display).to eql "_|_|_\n_|_|_\n | | \n"
   end
 
-  it 'takes a move' do
-    @game.move("M2")
-    expect(@game.moves).to eql ["M2"]
-  end
-
   it 'has two players' do
     expect(@players.count).to eql 2
   end
@@ -45,6 +40,15 @@ RSpec.describe Game do
     @board.add_move("B3", @game.active_player)
     expect(@game.over?).to eql true
   end
+
+  it 'can be won' do
+    @board.add_move("M1", @game.human)
+    @board.add_move("M2", @game.human)
+    @board.add_move("M3", @game.human)
+    expect(@game.winner).to eql @game.human
+  end
+
+
 
 end
 
@@ -92,12 +96,13 @@ RSpec.describe Ai do
 
   before(:each) do
     @game = Game.new
+    @ai = @game.ai
+    @board = @game.board
   end
 
-  it 'makes a move' do
-    ai = @game.ai
-    ai.move("M2")
-    expect(ai.moves).to eql ["M2"]
+  it 'makes a move on its own' do
+    @ai.move(@board)
+    expect(@ai.moves.count).to eql 1
   end
 
 end

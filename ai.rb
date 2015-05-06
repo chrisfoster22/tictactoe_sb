@@ -6,7 +6,9 @@ class Ai
     @moves = []
   end
 
-  def move(coordinate)
-    @moves << coordinate
+  def move(board)
+    move = board.possible_moves.sample
+    @moves << move
+    move
   end
 end
