@@ -4,10 +4,12 @@ require_relative '../game'
 RSpec.describe Game do
   before(:each) do
     @game = Game.new
+    @players = @game.players
+    @board = @game.board
   end
 
   it 'displays a board' do
-    expect(@game.board.display).to eql "_|_|_\n_|_|_\n | | \n"
+    expect(@board.display).to eql "_|_|_\n_|_|_\n | | \n"
   end
 
   it 'takes a move' do
@@ -16,17 +18,42 @@ RSpec.describe Game do
   end
 
   it 'has two players' do
-    expect(@game.players.count).to eql 2
+    expect(@players.count).to eql 2
   end
 
   it 'has an AI player and a Human player' do
-    expect(@game.players.first.class).to eql Ai
-    expect(@game.players.last.class).to eql Player
+    expect(@players.first.class).to eql Ai
+    expect(@players.last.class).to eql Player
   end
 
   it 'adds an X to the board when the AI makes a move' do
-    @game.board.add_move("M2", @game.ai)
-    expect(@game.board.display).to eql "_|_|_\n_|X|_\n | | \n"
+    @board.add_move("M2", @game.ai)
+    expect(@board.display).to eql "_|_|_\n_|X|_\n | | \n"
+  end
+
+  it 'adds an O to the board when the Human makes a move' do
+    @board.add_move("M2", @game.human)
+    expect(@board.display).to eql "_|_|_\n_|O|_\n | | \n"
+  end
+
+  it 'alternates turns' do
+    @board.add_move("M2", @game.active_player)
+    expect(@board.display).to eql "_|_|_\n_|X|_\n | | \n"
+    @board.add_move("M1", @game.active_player)
+    expect(@board.display).to eql "_|_|_\nO|X|_\n | | \n"
+  end
+
+  it 'can end' do
+    @board.add_move("M2", @game.active_player)
+    @board.add_move("M1", @game.active_player)
+    @board.add_move("M3", @game.active_player)
+    @board.add_move("T2", @game.active_player)
+    @board.add_move("T1", @game.active_player)
+    @board.add_move("T3", @game.active_player)
+    @board.add_move("B2", @game.active_player)
+    @board.add_move("B1", @game.active_player)
+    @board.add_move("B3", @game.active_player)
+    expect(@game.over?).to eql true
   end
 
 end
