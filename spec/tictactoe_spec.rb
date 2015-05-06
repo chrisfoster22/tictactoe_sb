@@ -118,4 +118,14 @@ RSpec.describe Ai do
     @ai.move(@board)
     expect(@ai.moves).to include("B1")
   end
+
+  it 'takes the opposite corner after player takes a corner' do
+    move = @ai.move(@board)
+    @board.possible_moves.delete(move)
+    move = @game.human.move("T1")
+    @board.last_move = "T1"
+    @ai.move(@board)
+    expect(@ai.moves).to include("B3")
+  end
+
 end

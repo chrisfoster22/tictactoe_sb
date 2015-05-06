@@ -15,22 +15,22 @@ class Ai
   end
 
   def respond_to_side(last_play)
-    if last_play == "T2" || "M3"
+    if last_play == "T2" || last_play == "M3"
       "B1"
-    elsif last_play == "B2" || "M1"
+    elsif last_play == "B2" || last_play == "M1"
       "T3"
     end
   end
 
   def respond_to_corner(last_play)
     if last_play == "T1"
-      @play = "B3"
+      "B3"
     elsif last_play == "T3"
-      @play = "B1"
+      "B1"
     elsif last_play == "B1"
-      @play = "T3"
+      "T3"
     elsif last_play == "B3"
-      @play = "T1"
+      "T1"
     end
   end
 
