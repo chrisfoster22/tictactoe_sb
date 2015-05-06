@@ -6,6 +6,10 @@ RSpec.describe Game do
     @game = Game.new
   end
 
+  it 'displays a board' do
+    expect(@game.board.display).to eql "_|_|_\n_|_|_\n | | \n"
+  end
+
   it 'takes a move' do
     @game.move("M2")
     expect(@game.moves).to eql ["M2"]
@@ -18,6 +22,11 @@ RSpec.describe Game do
   it 'has an AI player and a Human player' do
     expect(@game.players.first.class).to eql Ai
     expect(@game.players.last.class).to eql Player
+  end
+
+  it 'adds an X to the board when the AI makes a move' do
+    @game.board.add_move("M2", @game.ai)
+    expect(@game.board.display).to eql "_|_|_\n_|X|_\n | | \n"
   end
 
 end
