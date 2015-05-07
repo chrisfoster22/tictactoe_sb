@@ -46,7 +46,7 @@ class Game
 
   def winner
     @board.winning_moves.each do |w|
-      if (@board.ai_moves & w).sort == w.sort
+      if (@ai.moves & w).sort == w.sort
         puts "You Lost!"
         return @ai
       elsif (@board.player_moves & w).sort == w.sort

@@ -50,4 +50,14 @@ class Board
     value
   end
 
+  def potential_win
+    move = [""]
+    @winning_moves.each do |p|
+      move = p if (@player_moves & p).count == 2
+    end
+    move = move - @player_moves
+    move = move.first
+    move
+  end
+
 end

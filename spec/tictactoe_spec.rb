@@ -98,6 +98,7 @@ RSpec.describe Ai do
     @game = Game.new
     @ai = @game.ai
     @board = @game.board
+    @human = @game.human
   end
 
   it 'makes a move on its own' do
@@ -113,7 +114,7 @@ RSpec.describe Ai do
   it 'takes an opposite corner after player takes an edge on player first turn' do
     move = @ai.move(@board)
     @board.possible_moves.delete(move)
-    move = @game.human.move("T2")
+    move = @human.move("T2")
     @board.last_move = "T2"
     @ai.move(@board)
     expect(@ai.moves).to include("B1")
@@ -122,10 +123,45 @@ RSpec.describe Ai do
   it 'takes the opposite corner after player takes a corner' do
     move = @ai.move(@board)
     @board.possible_moves.delete(move)
-    move = @game.human.move("T1")
+    move = @human.move("T1")
     @board.last_move = "T1"
     @ai.move(@board)
     expect(@ai.moves).to include("B3")
   end
+
+  # it 'blocks player wins' do
+  #   move = @ai.move(@board)
+  #   @board.possible_moves.delete(move)
+  #   move = @board.add_move("T2", @human)
+  #   @board.last_move = "T2"
+  #   @board.possible_moves.delete("T2")
+  #   move = @ai.move(@board)
+  #   @board.possible_moves.delete(move)
+  #   move = @board.add_move("T3", @human)
+  #   @board.last_move = "T3"
+  #   @board.possible_moves.delete("T3")
+  #   @ai.move(@board)
+  #   expect(@ai.moves).to include("T1")
+  # end
+
+  it 'takes winning spots' do
+    move = @ai.move(@board)
+    @board.possible_moves.delete(move)
+    move = @board.add_move("M1", @human)
+    move = @board.last_move = "M1"
+    @board.possible_moves.delete(move)
+    move = @ai.move(@board)
+    @board.possible_moves.delete(move)
+    move = @board.add_move("B1", @human)
+    @board.last_move = "B1"
+    @board.possible_moves.delete(move)
+    move = @ai.move(@board)
+    move = @board.add_move("M1", @human)
+    move = @board.last_move = "M1"
+    @board.possible_moves.delete(move)
+    move = @ai.move(@board)
+    expect(@game.winner).to eql @ai
+  end
+
 
 end
