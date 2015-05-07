@@ -8,15 +8,13 @@ class Ai
 
   def move(board)
     move = [""]
-    until board.possible_moves.include?(move)
-      move = board.possible_moves.sample
-      move = board.potential_win
-      move = for_the_win(board)
-      if @moves.count < 2
-        move = "M2" if board.possible_moves.include?("M2")
-        move = respond_to_side(board.last_move) if board.sides.include?(board.last_move)
-        move = respond_to_corner(board.last_move) if board.corners.include?(board.last_move)
-      end
+    possible_moves = board.possible_moves
+    move = board.potential_win
+    move = for_the_win(board)
+    if @moves.count < 2
+      move = "M2" if possible_moves.include?("M2")
+      move = respond_to_side(board.last_move) if board.sides.include?(board.last_move)
+      move = respond_to_corner(board.last_move) if board.corners.include?(board.last_move)
     end
 
     @moves << move
@@ -50,7 +48,7 @@ class Ai
     end
     move = move - @moves
     move = move.first
-    move unless move == nil
+    move if board.possible_moves.include?(move) && move != nil
   end
 
 end
