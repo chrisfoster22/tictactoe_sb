@@ -129,36 +129,43 @@ RSpec.describe Ai do
     expect(@ai.moves).to include("B3")
   end
 
-  # it 'blocks player wins' do
-  #   move = @ai.move(@board)
-  #   @board.possible_moves.delete(move)
-  #   move = @board.add_move("T2", @human)
-  #   @board.last_move = "T2"
-  #   @board.possible_moves.delete("T2")
-  #   move = @ai.move(@board)
-  #   @board.possible_moves.delete(move)
-  #   move = @board.add_move("T3", @human)
-  #   @board.last_move = "T3"
-  #   @board.possible_moves.delete("T3")
-  #   @ai.move(@board)
-  #   expect(@ai.moves).to include("T1")
-  # end
+  it 'blocks player wins' do
+    move = @ai.move(@board)
+    @board.possible_moves.delete(move)
+    move = @board.add_move("T2", @human)
+    @board.last_move = "T2"
+    @board.possible_moves.delete("T2")
+    move = @ai.move(@board)
+    @board.possible_moves.delete(move)
+    move = @board.add_move("T3", @human)
+    @board.last_move = "T3"
+    @board.possible_moves.delete("T3")
+    @ai.move(@board)
+    expect(@ai.moves).to include("T1")
+  end
 
   it 'takes winning spots' do
     move = @ai.move(@board)
     @board.possible_moves.delete(move)
+
     move = @board.add_move("M1", @human)
-    move = @board.last_move = "M1"
+    @board.last_move = "M1"
     @board.possible_moves.delete(move)
+
     move = @ai.move(@board)
     @board.possible_moves.delete(move)
+
     move = @board.add_move("B1", @human)
     @board.last_move = "B1"
-    @board.possible_moves.delete(move)
+    @board.possible_moves.delete("B1")
+
     move = @ai.move(@board)
-    move = @board.add_move("M1", @human)
-    move = @board.last_move = "M1"
     @board.possible_moves.delete(move)
+
+    move = @board.add_move("T2", @human)
+    @board.last_move = "T2"
+    @board.possible_moves.delete(move)
+
     move = @ai.move(@board)
     expect(@game.winner).to eql @ai
   end

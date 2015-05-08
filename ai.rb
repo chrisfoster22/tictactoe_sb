@@ -7,10 +7,9 @@ class Ai
   end
 
   def move(board)
-    move = [""]
     possible_moves = board.possible_moves
-    move = board.potential_win
-    move = for_the_win(board)
+    move = possible_moves.sample
+    move = for_the_win(board) || board.potential_win || move
     if @moves.count < 2
       move = "M2" if possible_moves.include?("M2")
       move = respond_to_side(board.last_move) if board.sides.include?(board.last_move)
@@ -42,13 +41,15 @@ class Ai
   end
 
   def for_the_win(board)
-    move = []
+    possibility = []
+    move = nil
     board.winning_moves.each do |p|
-      move = p if (@moves & p).count == 2
+      possible_moves = p if (@moves & p).count == 2
+      if possible_moves
+        possibility = possible_moves - @moves
+        move = possibility.sample if board.possible_moves.include?(move)
+      end
     end
-    move = move - @moves
-    move = move.first
-    move if board.possible_moves.include?(move) && move != nil
+    move
   end
-
 end

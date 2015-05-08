@@ -57,7 +57,7 @@ class Board
     end
     move = move - @player_moves
     move = move.first
-    return move if possible_moves.include?(move)
+    move if possible_moves.include?(move)
   end
 
 end
