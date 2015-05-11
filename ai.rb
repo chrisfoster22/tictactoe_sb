@@ -41,13 +41,16 @@ class Ai
   end
 
   def for_the_win(board)
-    possibility = []
     move = nil
     board.winning_moves.each do |p|
       if (@moves & p).count == 2
-        possible_moves = p
-        possibility = possible_moves - @moves
-        move = possibility.sample if board.possible_moves.include?(move)
+        possibility = p - @moves
+        move = possibility.sample 
+        if board.possible_moves.include?(move)
+          break
+        else
+          move = nil
+        end
       end
     end
     move

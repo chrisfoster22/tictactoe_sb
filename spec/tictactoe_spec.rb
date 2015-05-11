@@ -23,6 +23,7 @@ RSpec.describe Game do
 
     it 'alternates turns' do
       @game.first_player = @game.ai
+      @game.second_player = @game.human
       @board.add_move("M2", @game.active_player)
       expect(@board.display).to eql "_|_|_\n_|X|_\n | | \n"
       @board.add_move("M1", @game.active_player)
@@ -132,46 +133,44 @@ RSpec.describe Ai do
 
   it 'blocks player wins' do
     move = @ai.move(@board)
-    @board.possible_moves.delete(move)
-    move = @board.add_move("T2", @human)
-    @board.last_move = "T2"
-    @board.possible_moves.delete("T2")
+    @board.add_move(move, @ai)
+
+    @board.add_move("T2", @human)
+
     move = @ai.move(@board)
-    @board.possible_moves.delete(move)
-    move = @board.add_move("T3", @human)
-    @board.last_move = "T3"
-    @board.possible_moves.delete("T3")
-    @ai.move(@board)
+    @board.add_move(move, @ai)
+    
+    @board.add_move("T3", @human)
+
+    move = @ai.move(@board)
+    @board.add_move(move, @ai)
+
     expect(@ai.moves).to include("T1")
   end
 
   it 'takes winning spots' do
     move = @ai.move(@board)
-    @board.possible_moves.delete(move)
+    @board.add_move(move, @ai)
 
-    move = @board.add_move("M1", @human)
-    @board.last_move = "M1"
-    @board.possible_moves.delete(move)
+     @board.add_move("M1", @human)
 
     move = @ai.move(@board)
-    @board.possible_moves.delete(move)
+    @board.add_move(move, @ai)
 
-    move = @board.add_move("B1", @human)
-    @board.last_move = "B1"
-    @board.possible_moves.delete("B1")
+    @board.add_move("B1", @human)
 
     move = @ai.move(@board)
-    @board.possible_moves.delete(move)
+    @board.add_move(move, @ai)
 
-    move = @board.add_move("T2", @human)
-    @board.last_move = "T2"
-    @board.possible_moves.delete(move)
+    @board.add_move("T2", @human)
 
     move = @ai.move(@board)
+    @board.add_move(move, @ai)
     expect(@game.winner).to eql @ai
   end
 
   it 'will not lose if it goes first' do
+    @game.first_player = @game.ai
     @game.play
     expect(@game.winner).not_to eql @game.human
   end

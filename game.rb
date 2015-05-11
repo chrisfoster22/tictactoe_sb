@@ -5,7 +5,7 @@ require_relative 'board'
 class Game
 
   attr_reader :moves, :players, :human, :ai, :board
-  attr_accessor :first_player, :turn
+  attr_accessor :first_player, :second_player, :turn
 
   def initialize
     @moves = []
