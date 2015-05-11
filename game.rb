@@ -5,6 +5,7 @@ require_relative 'board'
 class Game
 
   attr_reader :moves, :players, :human, :ai, :board
+  attr_accessor :first_player, :turn
 
   def initialize
     @moves = []
@@ -13,14 +14,16 @@ class Game
     @players = [@ai, @human]
     @board = Board.new
     @turn = 0
+    @first_player = @players.sample
+    @second_player = (@players - [@first_player]).sample
   end
 
   def active_player
     @turn += 1
     if @turn.odd?
-      return @ai
+      @first_player
     else
-      return @human
+      @second_player
     end
   end
 
@@ -29,11 +32,10 @@ class Game
       player = active_player
       if player.class == Ai
         puts 'My turn!'
-        move = @ai.move(@board)
-        @board.add_move(move, @ai)
+        ai.move(@board)
       elsif player.class == Player
         puts 'Your turn!'
-        move = gets.chomp
+        move = @board.possible_moves.sample
         @board.add_move(move, @human)
       end
       puts @board.display

@@ -22,11 +22,13 @@ RSpec.describe Game do
   end
 
     it 'alternates turns' do
-    @board.add_move("M2", @game.active_player)
-    expect(@board.display).to eql "_|_|_\n_|X|_\n | | \n"
-    @board.add_move("M1", @game.active_player)
-    expect(@board.display).to eql "_|_|_\nO|X|_\n | | \n"
-  end
+      @game.first_player = @game.ai
+      @board.add_move("M2", @game.active_player)
+      expect(@board.display).to eql "_|_|_\n_|X|_\n | | \n"
+      @game.turn += 2
+      @board.add_move("M1", @game.active_player)
+      expect(@board.display).to eql "_|_|_\nO|X|_\n | | \n"
+    end
 
   it 'can end' do
     @board.add_move("M2", @game.active_player)
@@ -170,5 +172,9 @@ RSpec.describe Ai do
     expect(@game.winner).to eql @ai
   end
 
+  it 'will not lose if it goes first' do
+    @game.play
+    expect(@game.winner).not_to eql @game.human
+  end
 
 end

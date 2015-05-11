@@ -10,13 +10,14 @@ class Ai
     possible_moves = board.possible_moves
     move = possible_moves.sample
     move = for_the_win(board) || board.potential_win || move
-    if @moves.count < 2
-      move = "M2" if possible_moves.include?("M2")
+    if @moves.count < 3
+      move = board.corners.sample
       move = respond_to_side(board.last_move) if board.sides.include?(board.last_move)
       move = respond_to_corner(board.last_move) if board.corners.include?(board.last_move)
     end
-
+    move = "M2" if possible_moves.include?("M2")
     @moves << move
+    p move
     move
   end
 
@@ -44,9 +45,10 @@ class Ai
     possibility = []
     move = nil
     board.winning_moves.each do |p|
-      possible_moves = p if (@moves & p).count == 2
-      if possible_moves
+      if (@moves & p).count == 2
+        possible_moves = p
         possibility = possible_moves - @moves
+        p possibility
         move = possibility.sample if board.possible_moves.include?(move)
       end
     end
