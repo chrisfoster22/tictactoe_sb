@@ -46,11 +46,7 @@ class Ai
       if (@moves & p).count == 2
         possibility = p - @moves
         move = possibility.sample 
-        if board.possible_moves.include?(move)
-          break
-        else
-          move = nil
-        end
+        board.possible_moves.include?(move) ? break : move = nil
       end
     end
     move
