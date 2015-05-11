@@ -25,7 +25,6 @@ RSpec.describe Game do
       @game.first_player = @game.ai
       @board.add_move("M2", @game.active_player)
       expect(@board.display).to eql "_|_|_\n_|X|_\n | | \n"
-      @game.turn += 2
       @board.add_move("M1", @game.active_player)
       expect(@board.display).to eql "_|_|_\nO|X|_\n | | \n"
     end

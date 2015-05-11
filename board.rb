@@ -41,6 +41,7 @@ class Board
     end
     @possible_moves.delete(coordinate)
     @last_move = coordinate
+    
   end
 
   def find_row(row)

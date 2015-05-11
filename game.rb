@@ -20,25 +20,28 @@ class Game
 
   def active_player
     @turn += 1
+    player = nil
     if @turn.odd?
-      @first_player
-    else
-      @second_player
+     player = @first_player
+    elsif @turn.even?
+     player = @second_player
     end
+    player
   end
 
   def play
     until over? || winner
+      move = ""   
       player = active_player
       if player.class == Ai
-        puts 'My turn!'
-        ai.move(@board)
+      #  puts 'My turn!'
+        move = ai.move(@board)
       elsif player.class == Player
-        puts 'Your turn!'
+      #  puts 'Your turn!'
         move = @board.possible_moves.sample
-        @board.add_move(move, @human)
       end
-      puts @board.display
+      @board.add_move(move, player)
+     # puts @board.display
     end
   end
 
