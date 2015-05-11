@@ -170,9 +170,17 @@ RSpec.describe Ai do
   end
 
   it 'will not lose if it goes first' do
-    @game.first_player = @game.ai
+    @game.first_player = @ai
+    @game.second_player = @human
     @game.play
-    expect(@game.winner).not_to eql @game.human
+    expect(@game.winner).not_to eql @human
+  end
+  
+  it 'will not lose if it goes second' do
+      @game.first_player = @human
+      @game.second_player = @ai
+      @game.play
+      expect(@game.winner).not_to eql @human
   end
 
 end

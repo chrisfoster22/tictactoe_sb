@@ -52,13 +52,14 @@ class Board
   end
 
   def potential_win
-    move = [""]
+    move = nil
     @winning_moves.each do |p|
-      move = p if (@player_moves & p).count == 2
+      if (@player_moves & p).count == 2
+        possibility = p - @player_moves
+        move = possibility.first
+        possible_moves.include?(move) ? break : move = nil
+      end
     end
-    move = move - @player_moves
-    move = move.first
-    move if possible_moves.include?(move)
+    move
   end
-
 end

@@ -41,7 +41,7 @@ class Game
         move = @board.possible_moves.sample
       end
       @board.add_move(move, player)
-     # puts @board.display
+      puts @board.display
     end
   end
 
