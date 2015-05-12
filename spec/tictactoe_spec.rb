@@ -102,128 +102,133 @@ RSpec.describe Ai do
     @board = @game.board
     @human = @game.human
   end
-
-  it 'makes a move on its own' do
-    @ai.move(@board)
-    expect(@ai.moves.count).to eql 1
-  end
-
-  it 'takes the middle spot if that spot is ever open' do
-    @ai.move(@board)
-    expect(@ai.moves).to include("M2")
-  end
-
-  it 'takes an opposite corner after player takes an edge on player first turn' do
-    move = @ai.move(@board)
-    @board.possible_moves.delete(move)
-    move = @human.move("T2")
-    @board.last_move = "T2"
-    @ai.move(@board)
-    expect(@ai.moves).to include("B1")
-  end
-
-  it 'takes the opposite corner after player takes a corner' do
-    move = @ai.move(@board)
-    @board.possible_moves.delete(move)
-    move = @human.move("T1")
-    @board.last_move = "T1"
-    @ai.move(@board)
-    expect(@ai.moves).to include("B3")
-  end
-
-  it 'blocks player wins' do
-    move = @ai.move(@board)
-    @board.add_move(move, @ai)
-
-    @board.add_move("T2", @human)
-
-    move = @ai.move(@board)
-    @board.add_move(move, @ai)
-    
-    @board.add_move("T3", @human)
-
-    move = @ai.move(@board)
-    @board.add_move(move, @ai)
-
-    expect(@ai.moves).to include("T1")
-  end
-
-  it 'takes winning spots' do
-    move = @ai.move(@board)
-    @board.add_move(move, @ai)
-
-     @board.add_move("M1", @human)
-
-    move = @ai.move(@board)
-    @board.add_move(move, @ai)
-
-    @board.add_move("B1", @human)
-
-    move = @ai.move(@board)
-    @board.add_move(move, @ai)
-
-    @board.add_move("T2", @human)
-
-    move = @ai.move(@board)
-    @board.add_move(move, @ai)
-    expect(@game.winner).to eql @ai
-  end
-
-  it 'blocks a side blitz' do
-    @board.add_move("T2", @human)
-    
-    move = @ai.move(@board)
-    @board.add_move(move, @ai)
-
-    @board.add_move("M3", @human)
-
-    move = @ai.move(@board)
-    @board.add_move(move, @ai)
-
-    expect(@ai.moves).to include("T3")
-  end
-
-  it 'blocks the opposite corner move' do
-    @board.add_move("T3", @human)
-    
-    move = @ai.move(@board)
-    @board.add_move(move, @ai)
-
-    @board.add_move("B1", @human)
-
-    move = @ai.move(@board)
-    @board.add_move(move, @ai)
-
-    expect((@ai.moves & @board.sides).count).to eql 1
-  end
-
-  it 'responds to the knight blitz' do
-    @board.add_move("B3", @human)
-    
-    move = @ai.move(@board)
-    @board.add_move(move, @ai)
-
-    @board.add_move("M1", @human)
-
-    move = @ai.move(@board)
-    @board.add_move(move, @ai)
-
-    expect(@ai.moves).to include("B1")
-  end
-
-
-  it 'will not lose if it goes first' do
-    @game.first_player = @ai
-    @game.second_player = @human
-    @game.play
-    expect(@game.winner).not_to eql @human
-  end
   
-  it 'will not lose if it goes second' do
+  context 'when it goes first' do
+
+    it 'makes a move on its own' do
+      @ai.move(@board)
+      expect(@ai.moves.count).to eql 1
+    end
+
+      it 'takes the middle spot if that spot is ever open' do
+      @ai.move(@board)
+      expect(@ai.moves).to include("M2")
+    end
+
+    it 'takes an opposite corner after player takes an edge on player first turn' do
+      move = @ai.move(@board)
+      @board.possible_moves.delete(move)
+      move = @human.move("T2")
+      @board.last_move = "T2"
+      @ai.move(@board)
+      expect(@ai.moves).to include("B1")
+    end
+
+    it 'takes the opposite corner after player takes a corner' do
+      move = @ai.move(@board)
+      @board.possible_moves.delete(move)
+      move = @human.move("T1")
+      @board.last_move = "T1"
+      @ai.move(@board)
+      expect(@ai.moves).to include("B3")
+    end
+
+    it 'blocks player wins' do
+      move = @ai.move(@board)
+      @board.add_move(move, @ai)
+
+      @board.add_move("T2", @human)
+
+      move = @ai.move(@board)
+      @board.add_move(move, @ai)
+      
+      @board.add_move("T3", @human)
+
+      move = @ai.move(@board)
+      @board.add_move(move, @ai)
+
+      expect(@ai.moves).to include("T1")
+    end
+
+    it 'takes winning spots' do
+      move = @ai.move(@board)
+      @board.add_move(move, @ai)
+
+       @board.add_move("M1", @human)
+
+      move = @ai.move(@board)
+      @board.add_move(move, @ai)
+
+      @board.add_move("B1", @human)
+
+      move = @ai.move(@board)
+      @board.add_move(move, @ai)
+
+      @board.add_move("T2", @human)
+
+      move = @ai.move(@board)
+      @board.add_move(move, @ai)
+      expect(@game.winner).to eql @ai
+    end
+
+    it 'will not lose' do
+      @game.first_player = @ai
+      @game.second_player = @human
+      @game.play
+      expect(@game.winner).not_to eql @human
+    end
+  end
+
+  context 'when it goes second' do
+
+    it 'blocks a side blitz' do
+      @board.add_move("T2", @human)
+      
+      move = @ai.move(@board)
+      @board.add_move(move, @ai)
+
+      @board.add_move("M3", @human)
+
+      move = @ai.move(@board)
+      @board.add_move(move, @ai)
+
+      expect(@ai.moves).to include("T3")
+    end
+
+    it 'blocks the opposite corner move' do
+      @board.add_move("T3", @human)
+      
+      move = @ai.move(@board)
+      @board.add_move(move, @ai)
+
+      @board.add_move("B1", @human)
+
+      move = @ai.move(@board)
+      @board.add_move(move, @ai)
+
+      expect((@ai.moves & @board.sides).count).to eql 1
+    end
+
+    it 'responds to the knight blitz' do
+      @board.add_move("B3", @human)
+      
+      move = @ai.move(@board)
+      @board.add_move(move, @ai)
+
+      @board.add_move("M1", @human)
+
+      move = @ai.move(@board)
+      @board.add_move(move, @ai)
+
+      expect(@ai.moves).to include("B1")
+    end
+    
+    it 'will not lose' do
       @game.first_player = @human
       @game.second_player = @ai
       @game.play
       expect(@game.winner).not_to eql @human
+    end
   end
 
 end
