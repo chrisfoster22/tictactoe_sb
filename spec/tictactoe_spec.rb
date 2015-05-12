@@ -169,6 +169,49 @@ RSpec.describe Ai do
     expect(@game.winner).to eql @ai
   end
 
+  it 'blocks a side blitz' do
+    @board.add_move("T2", @human)
+    
+    move = @ai.move(@board)
+    @board.add_move(move, @ai)
+
+    @board.add_move("M3", @human)
+
+    move = @ai.move(@board)
+    @board.add_move(move, @ai)
+
+    expect(@ai.moves).to include("T3")
+  end
+
+  it 'blocks the opposite corner move' do
+    @board.add_move("T3", @human)
+    
+    move = @ai.move(@board)
+    @board.add_move(move, @ai)
+
+    @board.add_move("B1", @human)
+
+    move = @ai.move(@board)
+    @board.add_move(move, @ai)
+
+    expect((@ai.moves & @board.sides).count).to eql 1
+  end
+
+  it 'responds to the knight blitz' do
+    @board.add_move("B3", @human)
+    
+    move = @ai.move(@board)
+    @board.add_move(move, @ai)
+
+    @board.add_move("M1", @human)
+
+    move = @ai.move(@board)
+    @board.add_move(move, @ai)
+
+    expect(@ai.moves).to include("B1")
+  end
+
+
   it 'will not lose if it goes first' do
     @game.first_player = @ai
     @game.second_player = @human

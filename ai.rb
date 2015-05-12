@@ -8,12 +8,17 @@ class Ai
 
   def move(board)
     possible_moves = board.possible_moves
+    last_move = board.last_move
+    corners = board.corners
+    sides = board.sides
     move = possible_moves.sample
     if @moves.count < 2
-      move = board.corners.sample
-      move = respond_to_side(board.last_move) if board.sides.include?(board.last_move)
-      move = respond_to_corner(board.last_move) if board.corners.include?(board.last_move)
-      move = respond_to_blitz(board) if (board.sides & board.possible_moves).count == 2
+      move = respond_to_side(last_move) if sides.include?(last_move)
+      move = respond_to_corner(last_move) if corners.include?(last_move)
+      move = respond_to_side_blitz(board) if (sides & possible_moves).count == 2
+      move = sides.sample if (corners & possible_moves).count == 2
+      move = respond_to_knight_blitz(board) if (sides & possible_moves).count == 3 && (corners & possible_moves).count == 3
+      move = corners.sample if last_move == "M2"
     end
     move = "M2" if possible_moves.include?("M2")
     move = for_the_win(board) || board.potential_win || move
@@ -41,17 +46,28 @@ class Ai
     end
   end
 
-  def respond_to_blitz(board)
-    sides = board.sides
-    possible_moves = board.possible_moves
-    blitz = sides & possible_moves
+  def respond_to_side_blitz(board)
+    blitz = board.sides & board.possible_moves
     sorted_blitz = blitz.sort
-    board.corners.sample 
-    "T3" if sorted_blitz == ["T2", "M3"].sort
-    "T1" if sorted_blitz == ["T2", "M1"].sort
-    "B1" if sorted_blitz == ["M1", "B2"].sort
-    "B3" if sorted_blitz == ["M3", "B2"].sort
+    move = board.corners.sample
+    move = "T3" if sorted_blitz == ["B2", "M1"]
+    move = "T1" if sorted_blitz == ["B2", "M3"]
+    move = "B1" if sorted_blitz == ["M3", "T2"]
+    move = "B3" if sorted_blitz == ["M1", "T2"]
+    move
   end
+
+  def respond_to_knight_blitz(board)
+    possible_moves = board.possible_moves
+    blitz = (board.corners - possible_moves) + (board.sides - possible_moves)
+    sorted_blitz = blitz.sort
+    move = "B1" if sorted_blitz == ["B3", "M1"] || sorted_blitz == ["B2", "T1"]
+    move = "T1" if sorted_blitz == ["B1", "T2"] || sorted_blitz == ["M1", "T3"]
+    move = "T3" if sorted_blitz == ["B3", "T2"] || sorted_blitz == ["M3", "T1"]
+    move = "B3" if sorted_blitz == ["B1", "M3"] || sorted_blitz == ["B2", "T3"] 
+    move
+  end
+
 
   def for_the_win(board)
     move = nil

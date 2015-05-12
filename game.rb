@@ -34,14 +34,15 @@ class Game
       move = ""   
       player = active_player
       if player.class == Ai
-      #  puts 'My turn!'
+        #puts 'My turn!'
         move = ai.move(@board)
       elsif player.class == Player
-      #  puts 'Your turn!'
+        #puts 'Your turn!'
         move = @board.possible_moves.sample
+        #move = gets.chomp
       end
       @board.add_move(move, player)
-      puts @board.display
+      # puts @board.display
     end
   end
 
@@ -52,10 +53,10 @@ class Game
   def winner
     @board.winning_moves.each do |w|
       if (@ai.moves & w).sort == w.sort
-        puts "You Lost!"
+        #puts "You Lost!"
         return @ai
       elsif (@board.player_moves & w).sort == w.sort
-        puts "You Won!"
+        #puts "You Won!"
         return @human
       end
     end
