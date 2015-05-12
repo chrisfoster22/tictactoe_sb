@@ -34,15 +34,27 @@ class Game
       move = ""   
       player = active_player
       if player.class == Ai
-        #puts 'My turn!'
+        puts 'My turn!'
         move = ai.move(@board)
       elsif player.class == Player
-        #puts 'Your turn!'
-        move = @board.possible_moves.sample
-        #move = gets.chomp
+        puts 'Your turn!'
+        move = gets.chomp
       end
       @board.add_move(move, player)
-      # puts @board.display
+      puts @board.display
+    end
+  end
+
+  def test_play
+    until over? || winner
+      move = ""   
+      player = active_player
+      if player.class == Ai
+        move = ai.move(@board)
+      elsif player.class == Player
+        move = @board.possible_moves.sample
+      end
+      @board.add_move(move, player)
     end
   end
 

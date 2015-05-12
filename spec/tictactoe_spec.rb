@@ -174,7 +174,7 @@ RSpec.describe Ai do
     it 'will not lose' do
       @game.first_player = @ai
       @game.second_player = @human
-      @game.play
+      @game.test_play
       expect(@game.winner).not_to eql @human
     end
   end
@@ -226,7 +226,7 @@ RSpec.describe Ai do
     it 'will not lose' do
       @game.first_player = @human
       @game.second_player = @ai
-      @game.play
+      @game.test_play
       expect(@game.winner).not_to eql @human
     end
   end
